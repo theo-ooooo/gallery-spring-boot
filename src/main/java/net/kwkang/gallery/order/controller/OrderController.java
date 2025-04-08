@@ -48,6 +48,6 @@ public class OrderController {
 
         orderService.order(orderReq, memberId);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
