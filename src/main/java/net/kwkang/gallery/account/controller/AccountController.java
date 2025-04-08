@@ -10,6 +10,7 @@ import net.kwkang.gallery.account.helper.AccountHelper;
 import net.kwkang.gallery.block.service.BlockService;
 import net.kwkang.gallery.common.utill.HttpUtils;
 import net.kwkang.gallery.common.utill.TokenUtils;
+import net.kwkang.gallery.member.service.MemberService;
 import org.antlr.v4.runtime.Token;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,7 @@ import java.util.Map;
 public class AccountController {
     private final AccountHelper accountHelper;
     private final BlockService blockService;
+    private final MemberService memberService;
 
     @PostMapping("/api/account/join")
     public ResponseEntity<?> join(@RequestBody AccountJoinRequest joinReq) {
@@ -31,6 +33,11 @@ public class AccountController {
         if(!StringUtils.hasLength(joinReq.getName())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+
+        if(memberService.find(joinReq.getLoginId()) != null) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+
 
         accountHelper.join(joinReq);
         return new ResponseEntity<>(HttpStatus.OK);
