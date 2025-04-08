@@ -4,6 +4,7 @@ package net.kwkang.gallery.order.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import net.kwkang.gallery.cart.service.CartService;
+import net.kwkang.gallery.common.utill.EncryptionUtils;
 import net.kwkang.gallery.item.dto.ItemRead;
 import net.kwkang.gallery.item.service.ItemService;
 import net.kwkang.gallery.order.dto.OrderRead;
@@ -61,6 +62,11 @@ return orderRepository.findAllByMemberIdOrderByIdDesc(memberId).stream().map(Ord
         }
 
         orderReq.setAmount(amount);
+
+        // 결제수단이 카드일때 카드 번호 암호화
+        if("card".equals(orderReq.getPayment())) {
+            orderReq.setCardNumber(EncryptionUtils.encrypt(orderReq.getCardNumber()));
+        }
 
         Order order = orderRepository.save(orderReq.toEntity(memberId));
 
