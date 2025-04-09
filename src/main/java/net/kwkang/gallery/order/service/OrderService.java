@@ -2,12 +2,13 @@ package net.kwkang.gallery.order.service;
 
 import net.kwkang.gallery.order.dto.OrderRead;
 import net.kwkang.gallery.order.dto.OrderRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 
 public interface OrderService {
 
-    List<OrderRead> findAll(Integer memberId);
+    Page<OrderRead> findAll(Integer memberId, Pageable pageable);
 
     OrderRead find(Integer id, Integer memberId);
 

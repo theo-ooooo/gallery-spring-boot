@@ -6,6 +6,8 @@ import net.kwkang.gallery.account.helper.AccountHelper;
 import net.kwkang.gallery.order.dto.OrderRead;
 import net.kwkang.gallery.order.dto.OrderRequest;
 import net.kwkang.gallery.order.service.OrderService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,11 +23,11 @@ public class OrderController {
     private final OrderService orderService;
 
     @GetMapping("/api/orders")
-    public ResponseEntity<?> readAll(HttpServletRequest req) {
+    public ResponseEntity<?> readAll(HttpServletRequest req, Pageable pageable) {
 
         Integer memberId = accountHelper.getMemberId(req);
 
-        List<OrderRead> orders = orderService.findAll(memberId);
+        Page<OrderRead> orders = orderService.findAll(memberId, pageable);
 
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }

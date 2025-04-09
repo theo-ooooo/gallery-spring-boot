@@ -12,6 +12,8 @@ import net.kwkang.gallery.order.dto.OrderRequest;
 import net.kwkang.gallery.order.entity.Order;
 import net.kwkang.gallery.order.entity.OrderItem;
 import net.kwkang.gallery.order.repository.OrderRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -28,8 +30,9 @@ public class BaseOrderService implements OrderService {
     private final CartService cartService;
 
     @Override
-    public List<OrderRead> findAll(Integer memberId) {
-return orderRepository.findAllByMemberIdOrderByIdDesc(memberId).stream().map(Order::toRead).toList();
+    public Page<OrderRead> findAll(Integer memberId, Pageable pageable) {
+        Page<Order> orders = orderRepository.findAllByMemberIdOrderByIdDesc(memberId, pageable);
+        return orders.map(Order::toRead);
     }
 
     @Override
