@@ -22,7 +22,7 @@ public class BaseMemberService implements MemberService {
 
     @Override
     public Member find(String loginId, String loginPw) {
-        Optional<Member> memberOptional = memberRepository.findByLoginIdAndLoginPw(loginId, loginPw);
+        Optional<Member> memberOptional = memberRepository.findByLoginId(loginId);
 
         if (memberOptional.isPresent()) {
             Member member = memberOptional.get();
